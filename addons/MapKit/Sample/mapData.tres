@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://addons/MapKit/Scripts/MapDataRes.cs" type="Script" id=1]
+[ext_resource path="res://addons/MapKit/Sample/sample_map.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+baseTexture = ExtResource( 2 )
+regionDataPath = "res://addons/MapKit/Sample/sample_map_data.json"

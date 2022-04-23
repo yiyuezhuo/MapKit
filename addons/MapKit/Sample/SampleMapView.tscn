@@ -1,0 +1,22 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/MapKit/Sample/sample_material.tres" type="Material" id=1]
+[ext_resource path="res://addons/MapKit/Sample/sample_map.png" type="Texture" id=2]
+[ext_resource path="res://addons/MapKit/Scenes/MapView.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/MapKit/Sample/mapData.tres" type="Resource" id=4]
+[ext_resource path="res://addons/MapKit/Sample/MapShower.cs" type="Script" id=5]
+[ext_resource path="res://addons/MapKit/Sample/MapView.cs" type="Script" id=7]
+
+[node name="MapView" instance=ExtResource( 3 )]
+script = ExtResource( 7 )
+mapShowerPath = NodePath("Map")
+cameraPath = NodePath("Camera2D")
+
+[node name="Map" parent="." index="0"]
+material = ExtResource( 1 )
+texture = ExtResource( 2 )
+script = ExtResource( 5 )
+mapDataResource = ExtResource( 4 )
+
+[node name="Camera2D" parent="." index="1"]
+zoom = Vector2( 1, 1 )

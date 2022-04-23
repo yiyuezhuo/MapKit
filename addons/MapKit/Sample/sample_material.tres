@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+
+[ext_resource path="res://addons/MapKit/Sample/sample_map_remap.png" type="Texture" id=1]
+[ext_resource path="res://addons/MapKit/Sample/sample_map.png" type="Texture" id=2]
+[ext_resource path="res://addons/MapKit/Shaders/map2.gdshader" type="Shader" id=3]
+
+[resource]
+shader = ExtResource( 3 )
+shader_param/width = 0.001
+shader_param/remap_k = 0.996094
+shader_param/remap_b = Vector2( 0.00195313, 0.00195313 )
+shader_param/selecting_color = Color( 0.5, 0, 1, 1 )
+shader_param/mode = null
+shader_param/base_texture = ExtResource( 2 )
+shader_param/remap_texture = ExtResource( 1 )

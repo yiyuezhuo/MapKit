@@ -1,0 +1,9 @@
+[gd_scene format=2]
+
+[node name="MapView" type="Node2D"]
+
+[node name="Map" type="Sprite" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
