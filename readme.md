@@ -1,6 +1,8 @@
 # MapKit
 
-Provides some helpers to make area movement mechanism for Godot mono.
+![out2](https://user-images.githubusercontent.com/12798270/164889898-8d928198-d5ec-41a9-9b83-19e403f97d4d.gif)
+
+Provides some helpers to make area movement mechanism for Godot Mono.
 
 * Map scrolling
 * Selected area highlighting & event.
