@@ -13,6 +13,7 @@ public interface IRegion<TRegion>
     Color remapColor{get; set;}
     HashSet<TRegion> neighbors{get;set;}
     Vector2 center{get; set;}
+    float area{get;set;}
 }
 
 public interface IRegionData
@@ -76,29 +77,25 @@ public class RegionMapFactory<TRegionData, TRegion> where TRegionData : IRegionD
         region.baseColor = Int4ToColor(regionData.BaseColor);
         region.remapColor = Int4ToColor(regionData.RemapColor);
         region.center = new Vector2(regionData.X, regionData.Y);
+        region.area = regionData.Points;
     }
 }
 
-public class MapData<TData, TRegion> : IMapData<TRegion> where TData : IRegionData where TRegion : IRegion<TRegion>, new()
+public class MapDataCore<TRegion> : IMapData<TRegion>
 {
     public Image baseImage;
     public int width{get; set;}
     public int height{get; set;}
     protected Dictionary<Color, TRegion> areaMap = new Dictionary<Color, TRegion>();
 
-    protected virtual RegionMapFactory<TData, TRegion> regionMapFactory{get => new RegionMapFactory<TData, TRegion>();}
-
-    public MapData(Texture baseTexture, string path)
+    public MapDataCore(Image baseImage)
     {
-        var regionJsonString = Utils.ReadText(path);
-
-        baseImage = baseTexture.GetData();
         baseImage.Lock();
 
         width = baseImage.GetWidth();
         height = baseImage.GetHeight();
 
-        areaMap = regionMapFactory.Get(regionJsonString);
+        this.baseImage = baseImage;
     }
 
     protected Vector2 WorldToMap(Vector2 worldPos)
@@ -132,6 +129,17 @@ public class MapData<TData, TRegion> : IMapData<TRegion> where TData : IRegionDa
     public IEnumerable<TRegion> GetAllAreas() => areaMap.Values;
 }
 
+public class MapData<TData, TRegion> : MapDataCore<TRegion> where TData : IRegionData where TRegion : IRegion<TRegion>, new()
+{
+    protected virtual RegionMapFactory<TData, TRegion> regionMapFactory{get => new RegionMapFactory<TData, TRegion>();}
+
+    public MapData(Texture baseTexture, string path) : base(baseTexture.GetData())
+    {
+        var regionJsonString = Utils.ReadText(path);
+        areaMap = regionMapFactory.Get(regionJsonString);
+    }
+}
+
 // Reference implementations
 
 public class RegionData : IRegionData
@@ -150,13 +158,14 @@ public class Region : IArea, IRegion<Region>
     public Color remapColor{get; set;}
     public HashSet<Region> neighbors{get; set;}
     public Vector2 center{get; set;}
+    public float area{get;set;}
 
     public override string ToString()
     {
         return $"Region({baseColor}, {center})";
     }
 
-    int ToId()
+    public int ToColorId()
     {
         return remapColor.g8 * 256 + remapColor.r8;
     }

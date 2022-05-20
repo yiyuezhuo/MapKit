@@ -186,7 +186,7 @@ public class MapShower<TArea> : Sprite where  TArea : IArea
 {
     [Export] Resource mapDataResource; // TODO: fallback to Mapdata?
 
-    IMapData<TArea> mapData;
+    public IMapData<TArea> mapData;
 
     int width{get => mapData.width;}
     int height{get => mapData.height;}
@@ -207,7 +207,8 @@ public class MapShower<TArea> : Sprite where  TArea : IArea
 
     public override void _Ready()
     {
-        mapData = ((IMapDataRes<TArea>)mapDataResource).GetInstance(); // TODO: Casting performance problem?
+        if(mapData == null)
+            mapData = ((IMapDataRes<TArea>)mapDataResource).GetInstance(); // TODO: Casting performance problem?
 
         var material = (ShaderMaterial)this.Material;
 
@@ -239,7 +240,7 @@ public class MapShower<TArea> : Sprite where  TArea : IArea
     static ImageTextureStrap<TArea> CreateStrap(Image image, ShaderMaterial material, string paramName)
     {
         var texture = new ImageTexture();
-        texture.CreateFromImage(image);
+        texture.CreateFromImage(image, 0);
 
         // Default is 7 -> (binary) 111 -> (FLAG_MIPMAPS, FLAG_REPEAT, FLAG_FILTER) = (true, true, true)
         texture.Flags = 0; // Disable those misleading "optimizations":
@@ -300,8 +301,8 @@ public class MapShower<TArea> : Sprite where  TArea : IArea
     public void OnClick(Vector2 pos)
     {
         var areaSelected = GetAreaFromPos(pos);
-
-        areaClickEvent?.Invoke(this, areaSelected);
+        if(areaSelected != null)
+            areaClickEvent?.Invoke(this, areaSelected);
     }
 
     TArea GetAreaFromPos(Vector2 pos)

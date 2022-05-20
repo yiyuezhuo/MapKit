@@ -16,7 +16,7 @@ using System.Collections.Generic;
 /// </summary>
 public class MapView<TArea> : Node2D where TArea : IArea //, IMapView 
 {
-    [Export] NodePath mapShowerPath;
+    [Export] public NodePath mapShowerPath;
     [Export] NodePath cameraPath;
 
     protected MapShower<TArea> mapShower;
